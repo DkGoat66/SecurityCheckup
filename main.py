@@ -1,8 +1,10 @@
+#import necessary modules from Flask and DNS resolver library
 from flask import Flask, request, render_template
 import dns.resolver
 
+# Intialize the Flask app
 app = Flask(__name__)
-
+# Function to get SPF record for a domain
 def get_spf(domain):
     try:
         answers = dns.resolver.resolve(domain, 'TXT')
@@ -13,7 +15,7 @@ def get_spf(domain):
         return "No SPF record found"
     except Exception as e:
         return f"Error: {str(e)}"
-
+#Function to get DKIM record for a domain
 def get_dkim(domain):
     try:
         dkim_domain = f"selector._domainkey.{domain}"
