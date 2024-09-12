@@ -36,11 +36,11 @@ def get_dkim(domain):
         # Handle any other exceptions that may occur
         return f"Error: {str(e)}"
 
-
+#home  page route 
 @app.route('/')
 def home():
     return render_template('index.html')
-
+#route to handle form submission from the homepage
 @app.route('/check', methods=['POST'])
 def check_domain():
     domain = request.form['domain']
