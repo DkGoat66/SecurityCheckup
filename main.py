@@ -43,10 +43,14 @@ def home():
 #route to handle form submission from the homepage
 @app.route('/check', methods=['POST'])
 def check_domain():
+    # Get the domain name from the form data
     domain = request.form['domain']
+    # Get the SPF record for the domain
     spf_record = get_spf(domain)
+    # Get the DKIM record for the domain
     dkim_record = get_dkim(domain)
+    # Render the result.html template with the domain, SPF, and DKIM records
     return render_template('result.html', domain=domain, spf=spf_record, dkim=dkim_record)
-
+    
 if __name__ == '__main__':
     app.run(debug=True)
