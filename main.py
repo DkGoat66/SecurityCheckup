@@ -1,10 +1,9 @@
-#import necessary modules from Flask and DNS resolver library
 from flask import Flask, request, render_template
 import dns.resolver
 
-# Intialize the Flask app
 app = Flask(__name__)
-# Function to get SPF record for a domain
+
+
 def get_spf(domain):
     try:
         # Query the DNS for the domain's TXT records
@@ -26,7 +25,8 @@ def get_spf(domain):
         return "Request timed out."
     except Exception as e:
         return f"Error: {str(e)}"
-#Function to analyze SPF records 
+
+
 def analyze_spf_security(spf_record):
     if "v=spf1" not in spf_record:
         return "No valid SPF record found."
@@ -44,8 +44,6 @@ def analyze_spf_security(spf_record):
         return "SPF record found, but its policy is unclear."
 
 
-
-#Function to get DKIM record for a domain
 def get_dkim(domain, selector):
     try:
         # Construct the DKIM domain based on the selector and domain
@@ -75,21 +73,25 @@ def get_dkim(domain, selector):
         return f"Error: {str(e)}"
 
 
-#home  page route 
 @app.route('/')
 def home():
     return render_template('index.html')
-#route to handle form submission from the homepage
+
+
 @app.route('/check', methods=['POST'])
 def check_domain():
-    # Get the domain name from the form data
     domain = request.form['domain']
-    # Get the SPF record for the domain
+    selector = request.form['selector']
+
+    # Get the SPF record and analyze its security
     spf_record = get_spf(domain)
-    # Get the DKIM record for the domain
-    dkim_record = get_dkim(domain)
-    # Render the result.html template with the domain, SPF, and DKIM records
-    return render_template('result.html', domain=domain, spf=spf_record, dkim=dkim_record)
-    
+    spf_analysis = analyze_spf_security(spf_record)
+
+    # Get the Dkim record
+    dkim_record = get_dkim(domain, selector)
+
+    return render_template('result.html', domain=domain, spf=spf_record, spf_analysis=spf_analysis, dkim=dkim_record)
+
+
 if __name__ == '__main__':
     app.run(debug=True)
