@@ -20,21 +20,34 @@ def get_spf(domain):
         # Handle any other exceptions that may occur
         return f"Error: {str(e)}"
 #Function to get DKIM record for a domain
-def get_dkim(domain):
+def get_dkim(domain, selector):
     try:
-        # Construct the DKIM domain using a standard selector (you may need to adjust 'selector' for different domains)
-        dkim_domain = f"selector._domainkey.{domain}"
-        # Resolve the DKIM domain for TXT records
+        # Construct the DKIM domain based on the selector and domain
+        dkim_domain = f"{selector}._domainkey.{domain}"
+
+        # Query the DNS for DKIM TXT records
         answers = dns.resolver.resolve(dkim_domain, 'TXT')
-        # Return the DKIM record
+
+        # Collect DKIM records
+        dkim_records = []
         for rdata in answers:
-            return str(rdata)
+            dkim_records.append(str(rdata))
+
+        # Return all DKIM records or a message if none found
+        if dkim_records:
+            return dkim_records
+        else:
+            return "No DKIM record found"
+
     except dns.resolver.NoAnswer:
-        # Handle the case when no DKIM record is found
         return "No DKIM record found"
+    except dns.resolver.NXDOMAIN:
+        return "Domain not found."
+    except dns.resolver.Timeout:
+        return "Request timed out."
     except Exception as e:
-        # Handle any other exceptions that may occur
         return f"Error: {str(e)}"
+
 
 #home  page route 
 @app.route('/')
