@@ -26,6 +26,24 @@ def get_spf(domain):
         return "Request timed out."
     except Exception as e:
         return f"Error: {str(e)}"
+#Function to analyze SPF records 
+def analyze_spf_security(spf_record):
+    if "v=spf1" not in spf_record:
+        return "No valid SPF record found."
+
+    # Check for strictness in policy directive
+    if spf_record.endswith("-all"):
+        return "Strong SPF configuration: emails from unauthorized servers will be rejected."
+    elif spf_record.endswith("~all"):
+        return "Moderate SPF configuration: emails from unauthorized servers will be accepted but marked suspicious."
+    elif spf_record.endswith("?all"):
+        return "Neutral SPF configuration: emails from unauthorized servers are treated neutrally."
+    elif spf_record.endswith("+all"):
+        return "Weak SPF configuration: any server can send emails, making the domain vulnerable."
+    else:
+        return "SPF record found, but its policy is unclear."
+
+
 
 #Function to get DKIM record for a domain
 def get_dkim(domain, selector):
