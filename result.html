@@ -3,12 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Results for {{ domain }}</title>
+    <title>Domain Results</title>
+    <style>
+        /* General page styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        /* Container for the results */
+        .container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: left;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-size: 28px;
+            color: #333333;
+        }
+
+        h2, h3 {
+            margin-top: 20px;
+            color: #555555;
+        }
+
+        p {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #333333;
+            margin-bottom: 15px;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        a:hover {
+            background-color: #0056b3;
+        }
+
+        /* Responsive design */
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+                max-width: 100%;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1>Results for {{ domain }}</h1>
-    <p><strong>SPF Record:</strong> {{ spf }}</p>
-    <p><strong>DKIM Record:</strong> {{ dkim }}</p>
-    <a href="/">Check another domain</a>
+
+    <div class="container">
+        <h1>Results for {{ domain }}</h1>
+
+        <h2>SPF Record</h2>
+        <p>{{ spf }}</p>
+
+        <h3>SPF Security Analysis</h3>
+        <p>{{ spf_analysis }}</p>
+
+        <h2>DKIM Record</h2>
+        <p>{{ dkim }}</p>
+
+        <a href="/">Check another domain</a>
+    </div>
+
 </body>
 </html>
