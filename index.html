@@ -4,13 +4,91 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SPF/DKIM Checker</title>
+    <style>
+        /* General page styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Container for the form */
+        .container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #333333;
+        }
+
+        /* Form input field styling */
+        input[type="text"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #cccccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        /* Button styling */
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Label styling */
+        label {
+            font-size: 16px;
+            color: #555555;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        /* Responsive design */
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+                max-width: 100%;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1>SPF and DKIM Checker</h1>
-    <form action="/check" method="post">
-        <label for="domain">Enter Domain:</label>
-        <input type="text" name="domain" id="domain" required>
-        <button type="submit">Check</button>
-    </form>
+
+    <div class="container">
+        <h1>SPF and DKIM Checker</h1>
+        <form action="/check" method="post">
+            <label for="domain">Enter Domain:</label>
+            <input type="text" name="domain" id="domain" required>
+            <br>
+            <label for="selector">Enter DKIM selector:</label>
+            <input type="text" name="selector" id="selector" required>
+            <button type="submit">Check</button>
+        </form>
+    </div>
+
 </body>
 </html>
