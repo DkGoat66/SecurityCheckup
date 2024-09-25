@@ -7,18 +7,26 @@ app = Flask(__name__)
 # Function to get SPF record for a domain
 def get_spf(domain):
     try:
-        # Resolve the domain for TXT records (SPF records are typically stored in TXT)
+        # Query the DNS for the domain's TXT records
         answers = dns.resolver.resolve(domain, 'TXT')
-        # Loop through the records and return the SPF record if found
+
+        # Loop through the TXT records to find the SPF record
         for rdata in answers:
-            if 'v=spf1' in str(rdata):  # SPF records start with 'v=spf1'
-                return str(rdata)
-    except dns.resolver.NoAnswer:
-        # Handle the case when no SPF record is found
+            for txt_record in rdata.strings:
+                spf_record = txt_record.decode('utf-8')
+                if spf_record.startswith("v=spf1"):
+                    return spf_record
         return "No SPF record found"
+
+    except dns.resolver.NoAnswer:
+        return "No SPF record found"
+    except dns.resolver.NXDOMAIN:
+        return "Domain not found or no DNS answer."
+    except dns.resolver.Timeout:
+        return "Request timed out."
     except Exception as e:
-        # Handle any other exceptions that may occur
         return f"Error: {str(e)}"
+
 #Function to get DKIM record for a domain
 def get_dkim(domain, selector):
     try:
